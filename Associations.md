@@ -88,15 +88,14 @@ To tell Sequelize that you want an association a function must be called. Here i
 Notice the associate method receives a parameter of models, this contains every declared model within the models directory.
 The associate() method is called in the db/index.js file after each model is imported into the Sequelize instance. This allows code within the associate() method to access ANY of the available models.
 
-##### Now we can fill in our information to create our association. 
+**Now we can fill in our information to create our association.** 
 To define a single User to many Courses, we call the User model's `hasMany()` method, passing in a reference to the Course model:
 
 ```User. associate = function(models) {
     User.hasMany(models.Course, {
         //options
         });
-    };
-```
+    };```
 
 This tells Sequelize that a User can be associated with one or more(or "many") courses. The Courses table will now contain a UserId foreign Key column. *This will be explained in more detail later when we are customizing the primary key*
 
