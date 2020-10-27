@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
   return User;
 };
 ```
-Associations connect two models by a single foreign key, so we need to edit **both** our models to reflect this relationship.
+Associations connect two models by a single foreign key, so we need to edit both our models to reflect this relationship.
 ---
 There are many different types of associations, if you would like to explore more than what is focused on for this project click here: <https://sequelize.org/master/manual/assocs.html>
 ---
