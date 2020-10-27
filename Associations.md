@@ -4,7 +4,7 @@
 * Calling sequelize.define(modelName, attributes, options)
 * Extending Model and calling init(attributes, options)
 
-Both seem to be functionally equal (sequelize.init actually calls Model.init) however I prefered extending the Model, it felt like a more intuitive and concise way to define the model. *Upon extra research it seems extending the model is the newer method so this will probably have more longevity for support. The following example will reflect the latter definition.
+Both seem to be functionally equal (sequelize.init actually calls Model.init) however I prefered extending the Model, it felt like a more intuitive and concise way to define the model. *Upon extra research it seems extending the model is the newer method so this will probably have more longevity for support. The following example will reflect the latter definition.*
 
  I would suggest using the Sequelize CLI to create your models. Here is an example of creating a User and a Course model. When you generate the models using Sequelize CLI, the corresponding migration file is also created.
 
