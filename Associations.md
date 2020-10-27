@@ -176,6 +176,8 @@ await queryInterface.createTable('Users', {
   }
 }
 ```
+*****
+### Migrations
 
 One more change is necesasry to fully set up the relationship in the databse. Navigate back to the `create-course.js` file in /migrations. In this file we need to change the object labeled userId so that it references the correct information. 
 *****
@@ -233,6 +235,9 @@ Here is the full 'create-course.js' file in the /migrations folder:
 ```
   * `onDelete: 'CASCADE'` configures the model so if a user is deleted, the user's Course will be deleted as well.
   * `references` section will set up the 'Courses' table in the database to reflect the same relationship we set up in the inital steps of this.
+
+*****
+### Defining an Alias
 
 At this point, you could have everything working just great however I was still receiving an error `column 'UserId' does not exist`. For me, this was because of how I was requesting information in my GET request. If you're still receiving this error, navigate to your routes.js file and check out your GET request
 
