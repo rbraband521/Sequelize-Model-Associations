@@ -70,7 +70,11 @@ There are other types of associations other than what is focused on for this pro
 *****
 ##### For this project, we are using a One-To-Many association. 
 
-One-To-Many associations are connecting one source with multiple targets, while all these targets are connected only with this single source. We are trying to associate a single User to many Courses as well as a single Course to a single User. The relationship must be a two-way street. The key words for this association are ```hasMany and ```belongsTo.
+One-To-Many associations connect one source with multiple targets, while all these targets are connected only with this single source. 
+
+###### Project specific explanation
+
+We are trying to associate a single User to many Courses as well as a single Course to a single User. The relationship must be a two-way street. The key words for this association are `hasMany` and `belongsTo`.
 
 To tell Sequelize that you want an association a function must be called:
 
