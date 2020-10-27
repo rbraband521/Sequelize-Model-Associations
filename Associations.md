@@ -109,13 +109,13 @@ For this example, a Course can only have ONE User so we use a One-to-One Associa
 };
 ```
 *****
-#### Foreign Key
+**Foreign Key**
 
 This tells Sequelize a Course can only be associated with only person
 
 At this point if you run `npm start` you will most likey receive an error related to a foreign key constraint. This is because the Course table UserId foreign key colum name (mentioned above) doesn't match the column naming convention of the other table columns. Sequelize automatilly defines the foreign key names. Sometimes this works for the program you've already written, sometimes it doesn't. It is simple to specify a custom foreign key and in the long run may save you some time troubleshooting a bug in your associations.
 
-##### First let's set the foreign key name in both models:
+**First let's set the foreign key name in both models:**
 
 To customize the foreign key name, we can pass an options object as the second argument of `belongsTo()` and `hasMany()` methods. The 'foreignKey' property on the options object specifies the foreign key name.
 
