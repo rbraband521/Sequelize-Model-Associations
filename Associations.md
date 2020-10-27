@@ -78,7 +78,8 @@ The relationship must be a two-way street. The key words for this association ar
 
 To tell Sequelize that you want an association a function must be called. Here is the structure of the function:
 
-```User.associate = function(models) {
+```
+User.associate = function(models) {
     //where the association is defined
     Model.hasMany(models.targetModel, {
         //options
