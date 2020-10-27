@@ -79,7 +79,7 @@ One-To-Many associations connect one source with multiple targets, while all the
 
 The relationship must be a two-way street. The key words for this association are `hasMany` and `belongsTo`.
 
-To tell Sequelize that you want an association, a function must be called. Here is the structure of the function:
+To tell Sequelize that you want an association, first a function must be called. Here is the structure of the function:
 
 ```
 User.associate = function(models) {
@@ -90,7 +90,8 @@ User.associate = function(models) {
 };
 ```
 Notice the `associate()` method receives a parameter of models, this contains every declared model within the models directory.
-The `associate()` method is called in the db/index.js file after each model is imported into the Sequelize instance. This allows code within the `associate()` method to access *_ANY_* of the available models.
+The `associate()` method is called in the db/index.js file after each model is imported into the Sequelize instance. This allows code within the `associate()` method to access *_ANY_* of the available models. 
+###### reference <https://teamtreehouse.com/library/data-relationships-with-sql-and-sequelize-2/data-relationships-in-sequelize/define-a-onetomany-relationship-using-sequelize-associations>
 
 **Now we can fill in our information to create our association.** To define a single User to many Courses, call the User model's `hasMany()` method, passing in a reference to the Course model:
 
@@ -102,7 +103,7 @@ User. associate = function(models) {
 };
 ```
 
-This tells Sequelize that a User can be associated with one or more(or "many") Courses. The Courses table will now contain a UserId foreign Key column. *This will be explained in more detail later when we are customizing the primary key*
+This tells Sequelize that a User can be associated with one or more(or "many") Courses. The Courses table will now contain a `UserId` foreign Key column. *This will be explained in more detail later when we are customizing the foreign key, however take note of the it being capitalized*
 
 For this example, a Course can only have ONE User so we use a One-to-One Association. A single course to a single user. This association includes the Course model's belongsTo() method passing in a reference to the User model:
 
@@ -119,11 +120,12 @@ This tells Sequelize a Course can only be associated with only person
 *****
 ### Foreign Key
 
-At this point if you run `npm start` you will most likey receive an error related to a foreign key constraint. This is because the Course table UserId foreign key colum name (mentioned above) doesn't match the column naming convention of the other table columns. Sequelize automatilly defines the foreign key names. Sometimes this works for the program you've already written, sometimes it doesn't. It is simple to specify a custom foreign key and in the long run may save you some time troubleshooting a bug in your associations.
+At this point if you run `npm start` you will most likey receive an error related to a foreign key constraint. This is because the UserId column for the foreign key in the Course table(mentioned above) doesn't match the column naming convention of the other table columns. Sequelize automatilly defines the foreign key names. Sometimes this works for the program you've already written, sometimes it doesn't. In my case, it didn't because the generated column name is 'UserId', however when I run the database, it is searching for 'userId'. It is simple to specify a custom foreign key (once you know the problem) and in the long run may save you some time troubleshooting a bug in your associations.
 
 **First let's set the foreign key name in both models:**
 
-To customize the foreign key name, we can pass an options object as the second argument of `belongsTo()` and `hasMany()` methods. The 'foreignKey' property on the options object specifies the foreign key name.
+In order to do this we can finally write some code into the second argument of the `belongsTo()` and `hasMany()` methods. If we pass an options object here we can use the `foreignKey` property to specify the foreign key name like so:
+
 
 models/course.js:
 
