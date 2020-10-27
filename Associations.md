@@ -68,11 +68,11 @@ Associations connect two models by a single foreign key, so we need to edit **bo
 *****
 There are other types of associations other than what is focused on for this project, if you would like to explore them click here: <https://sequelize.org/master/manual/assocs.html>
 *****
-##### For this project, we are using a One-To-Many association. 
+**For this project, we are using a One-To-Many association.**
 
 One-To-Many associations connect one source with multiple targets, while all these targets are connected only with this single source. 
 
-###### Project specific explanation: We are trying to associate a single User to many Courses as well as a single Course to a single User. 
+**Project specific explanation: We are trying to associate a single User to many Courses as well as a single Course to a single User.** 
 
 The relationship must be a two-way street. The key words for this association are `hasMany` and `belongsTo`.
 
@@ -109,13 +109,13 @@ For this example, a Course can only have ONE User so we use a One-to-One Associa
 };
 ```
 *****
-#### Foreign Key
+### Foreign Key
 
 This tells Sequelize a Course can only be associated with only person
 
 At this point if you run `npm start` you will most likey receive an error related to a foreign key constraint. This is because the Course table UserId foreign key colum name (mentioned above) doesn't match the column naming convention of the other table columns. Sequelize automatilly defines the foreign key names. Sometimes this works for the program you've already written, sometimes it doesn't. It is simple to specify a custom foreign key and in the long run may save you some time troubleshooting a bug in your associations.
 
-**First let's set the foreign key name in both models:
+**First let's set the foreign key name in both models:**
 
 To customize the foreign key name, we can pass an options object as the second argument of `belongsTo()` and `hasMany()` methods. The 'foreignKey' property on the options object specifies the foreign key name.
 
@@ -137,7 +137,7 @@ models/user.js:
 };
 ```
 *****
-#### PRIMARY KEY
+### PRIMARY KEY
 
 Sequelize adds an id attribute to your model, which generates an 'id' column in your table that assigns each row a unique ID. The ID acts as a 'primary key', or a unique indexable reference for each entry.
 
