@@ -14,7 +14,8 @@ Both seem to be functionally equal (sequelize.init actually calls Model.init) ho
 
 Navigate to the User model, it should look like this after providing the necessary information. 
 
-```''use strict';
+```
+'use strict';
 const {
   Model
 } = require('sequelize');
@@ -43,7 +44,8 @@ module.exports = (sequelize, DataTypes) => {
 };
 ```
 For this specific project i had written and tested my models before defining the associations between them so the associations will be defined in the options parameter instead of before the attributes like the generated model suggests. Currently the model looks like this before defining the associations.
-```''use strict';
+```
+'use strict';
 const {
   Model
 } = require('sequelize');
@@ -76,10 +78,10 @@ One-To-Many associations connect one source with multiple targets, while all the
 
 The relationship must be a two-way street. The key words for this association are `hasMany` and `belongsTo`.
 
-To tell Sequelize that you want an association a function must be called. Here is the structure of the function:
+To tell Sequelize that you want an association, a function must be called. Here is the structure of the function:
 
 ```
-User.associate = function(models) {
+  User.associate = function(models) {
     //where the association is defined
     Model.hasMany(models.targetModel, {
         //options
@@ -89,20 +91,22 @@ User.associate = function(models) {
 Notice the `associate()` method receives a parameter of models, this contains every declared model within the models directory.
 The `associate()` method is called in the db/index.js file after each model is imported into the Sequelize instance. This allows code within the `associate()` method to access *_ANY_* of the available models.
 
-**Now we can fill in our information to create our association.** To define a single User to many Courses, we call the User model's `hasMany()` method, passing in a reference to the Course model:
+**Now we can fill in our information to create our association.** To define a single User to many Courses, call the User model's `hasMany()` method, passing in a reference to the Course model:
 
-```User. associate = function(models) {
+```
+User. associate = function(models) {
     User.hasMany(models.Course, {
         //options
         });
     };
- ```
+```
 
-This tells Sequelize that a User can be associated with one or more(or "many") courses. The Courses table will now contain a UserId foreign Key column. *This will be explained in more detail later when we are customizing the primary key*
+This tells Sequelize that a User can be associated with one or more(or "many") Courses. The Courses table will now contain a UserId foreign Key column. *This will be explained in more detail later when we are customizing the primary key*
 
 For this example, a Course can only have ONE User so we use a One-to-One Association. A single course to a single user. This association includes the Course model's belongsTo() method passing in a reference to the User model:
 
-```Course.associate = function(models) {
+```
+Course.associate = function(models) {
     Course.belongsTo(models.User, {
         //options
     })
@@ -122,7 +126,8 @@ To customize the foreign key name, we can pass an options object as the second a
 
 models/course.js:
 
-```Course.associate = function(models) {
+```
+Course.associate = function(models) {
     Course.belongsTo(models.User, {
         foreignKey: 'userId'
     });
@@ -131,7 +136,8 @@ models/course.js:
 
 models/user.js:
 
-```User.associate = function(models) {
+```
+User.associate = function(models) {
     User.hasMany(models.Course, {
         foreignKey: 'userId'
     });
@@ -144,22 +150,24 @@ Sequelize adds an id attribute to your model, which generates an 'id' column in 
 
 Specifying 'primaryKey: true' intructs Sequelize to generate the primary key column using the property name defined in the model("foreignKey: 'userId'"). 'userId' refers to the id column in the Users table. (This is important to remember, there is no userId column in the user table)
 In both migration files where the Courses and Users tables are created specify 'primaryKey: true' like so:
-
-    await queryInterface.createTable('Courses', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      }
-*****************************
-    await queryInterface.createTable('Users', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      }
+```
+  await queryInterface.createTable('Courses', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER
+    }
+```
+```
+  await queryInterface.createTable('Users', {
+    id: {
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+      type: Sequelize.INTEGER
+    }
+```
 
 One more change is necesasry to fully set up the relationship in the databse. In the projects' /migrations folder, there should be a file with the ending 'create-course.js'. This would have been generated when you created the Course model. In this file we need to change the object labeled userId so that it references the correct information. This was a place where I personally got held up. I didn't even have a userId object in this file so when I was first testing my database I was receiving "column userId does not exist in 'Courses'". Sounds straight forward, but it took me a while to troubleshoot. Here is the full 'create-course.js' file in the /migrations folder:
 
@@ -217,7 +225,8 @@ At this point, I was still receiving an error "column 'userId' does not exist". 
 
 Mine looks like this: 
 
-```router.get('/courses', async (req, res) => {
+```
+router.get('/courses', async (req, res) => {
     try {
     const courses = await Course.findAll({
         include: {
@@ -240,21 +249,25 @@ In the include property I've defined an alias with "as: 'user'". Because of this
 
 models/course.js:
 
+```
 Course.associate = function(models) {
     Course.belongsTo(models.User, {
         foreignKey: 'userId',
         as: 'user'
     });
 };
+```
 
 models/user.js:
 
+```
 User.associate = function(models) {
     User.hasMany(models.Course, {
         foreignKey: 'userId',
         as: 'user'
     });
 };
+```
 
 Now, everything should be connected. Our models are calling the associate method which connects one User to many Courses as well as one Course to one User. This association's foreign key is 'userId' and this is all contained in a user object with the alias of 'user'. 
 
