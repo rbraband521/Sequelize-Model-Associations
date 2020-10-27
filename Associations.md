@@ -76,62 +76,69 @@ One-To-Many associations connect one source with multiple targets, while all the
 
 We are trying to associate a single User to many Courses as well as a single Course to a single User. The relationship must be a two-way street. The key words for this association are `hasMany` and `belongsTo`.
 
-To tell Sequelize that you want an association a function must be called:
+To tell Sequelize that you want an association a function must be called. Here is the structure of the function:
 
-User.associate = function(models) {
+```User.associate = function(models) {
     //where the association is defined
     Model.hasMany(models.targetModel, {
         //options
     })
 };
-Notice the associate method receives a parameter of models, which contains every declared model within the models directory.
+```
+Notice the associate method receives a parameter of models, this contains every declared model within the models directory.
 The associate() method is called in the db/index.js file after each model is imported into the Sequelize instance. This allows code within the associate() method to access ANY of the available models.
 
+###### Now we can fill in our information to create our association. 
+To define a single User to many Courses, we call the User model's `hasMany()` method, passing in a reference to the Course model:
 
-
-To define a single User to many Courses, we call the User model's hasMany() method, passing in a reference to the Course model:
-User. associate = function(models) {
+```User. associate = function(models) {
     User.hasMany(models.Course, {
         //options
         });
     };
+```
 
-This tells Sequelize that a User can be associated with one or more(or "many") courses. The Courses table will now contain a UserId foreign Key column.
+This tells Sequelize that a User can be associated with one or more(or "many") courses. The Courses table will now contain a UserId foreign Key column. *This will be explained in more detail later when we are customizing the primary key*
 
 For this example, a Course can only have ONE User so we use a One-to-One Association. A single course to a single user. This association includes the Course model's belongsTo() method passing in a reference to the User model:
 
-Course.associate = function(models) {
+```Course.associate = function(models) {
     Course.belongsTo(models.User, {
         //options
     })
 };
+```
+*****
+#### Foreign Key
 
 This tells Sequelize a Course can only be associated with only person
 
-At this point if you run npm start you will most likey receive an error related to a foreign key constraint. This is because the Course table UserId foreign key colum name doesn't match the column naming convention of the other table columns. Sequelize automatilly defines the foreign key names. Sometimes this works for the program you've already written, sometimes it doesn't. It is simple to specify a custom foreign key and in the long run may save you some time troubleshooting a bug in your associations.
+At this point if you run `npm start` you will most likey receive an error related to a foreign key constraint. This is because the Course table UserId foreign key colum name (mentioned above) doesn't match the column naming convention of the other table columns. Sequelize automatilly defines the foreign key names. Sometimes this works for the program you've already written, sometimes it doesn't. It is simple to specify a custom foreign key and in the long run may save you some time troubleshooting a bug in your associations.
 
-First let's set the foreign key name in both models:
+##### First let's set the foreign key name in both models:
 
- To customize the foreign key name, we can pass an options object as the second argument of belongsTo() and hasMany() methods. The 'foreignKey' property on the options object specifies the foreign key name.
+To customize the foreign key name, we can pass an options object as the second argument of `belongsTo()` and `hasMany()` methods. The 'foreignKey' property on the options object specifies the foreign key name.
 
 models/course.js:
 
-Course.associate = function(models) {
+```Course.associate = function(models) {
     Course.belongsTo(models.User, {
         foreignKey: 'userId'
     });
 };
+```
 
 models/user.js:
 
-User.associate = function(models) {
+```User.associate = function(models) {
     User.hasMany(models.Course, {
         foreignKey: 'userId'
     });
 };
+```
+*****
+#### PRIMARY KEY
 
-
-PRIMARY KEY
 Sequelize adds an id attribute to your model, which generates an 'id' column in your table that assigns each row a unique ID. The ID acts as a 'primary key', or a unique indexable reference for each entry.
 
 Specifying 'primaryKey: true' intructs Sequelize to generate the primary key column using the property name defined in the model("foreignKey: 'userId'"). 'userId' refers to the id column in the Users table. (This is important to remember, there is no userId column in the user table)
