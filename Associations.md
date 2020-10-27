@@ -72,9 +72,9 @@ There are other types of associations other than what is focused on for this pro
 
 One-To-Many associations connect one source with multiple targets, while all these targets are connected only with this single source. 
 
-###### Project specific explanation
+###### Project specific explanation: We are trying to associate a single User to many Courses as well as a single Course to a single User. 
 
-We are trying to associate a single User to many Courses as well as a single Course to a single User. The relationship must be a two-way street. The key words for this association are `hasMany` and `belongsTo`.
+The relationship must be a two-way street. The key words for this association are `hasMany` and `belongsTo`.
 
 To tell Sequelize that you want an association a function must be called. Here is the structure of the function:
 
@@ -88,7 +88,7 @@ To tell Sequelize that you want an association a function must be called. Here i
 Notice the associate method receives a parameter of models, this contains every declared model within the models directory.
 The associate() method is called in the db/index.js file after each model is imported into the Sequelize instance. This allows code within the associate() method to access ANY of the available models.
 
-###### Now we can fill in our information to create our association. 
+##### Now we can fill in our information to create our association. 
 To define a single User to many Courses, we call the User model's `hasMany()` method, passing in a reference to the Course model:
 
 ```User. associate = function(models) {
