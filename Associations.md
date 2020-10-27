@@ -71,6 +71,12 @@ Associations connect two models by a single foreign key, so we need to edit **bo
 *****
 There are other types of associations other than what is focused on for this project, if you would like to explore them click here: <https://sequelize.org/master/manual/assocs.html>
 *****
+Notice the `associate()` method receives a parameter of models, this contains every declared model within the models directory.
+The `associate()` method is called in the db/index.js file after each model is imported into the Sequelize instance. This allows code within the `associate()` method to access *_ANY_* of the available models. 
+###### reference: <https://teamtreehouse.com/library/data-relationships-with-sql-and-sequelize-2/data-relationships-in-sequelize/define-a-onetomany-relationship-using-sequelize-associations>
+
+**Now we can fill in our information to create our association.** 
+
 **For this project, we are using a One-To-Many association.**
 
 One-To-Many associations connect one source with multiple targets, while all these targets are connected only with this single source. 
@@ -78,22 +84,7 @@ One-To-Many associations connect one source with multiple targets, while all the
 ##### Project specific explanation: We are trying to associate a single User to many Courses as well as a single Course to a single User. 
 
 The relationship must be a two-way street. The key words for this association are `hasMany` and `belongsTo`.
-
-To tell Sequelize that you want an association, first a function must be called. Here is the structure of the function:
-
-```
-User.associate = function(models) {
-  //where the association is defined
-  Model.hasMany(models.targetModel, {
-    //options
-  })
-};
-```
-Notice the `associate()` method receives a parameter of models, this contains every declared model within the models directory.
-The `associate()` method is called in the db/index.js file after each model is imported into the Sequelize instance. This allows code within the `associate()` method to access *_ANY_* of the available models. 
-###### reference: <https://teamtreehouse.com/library/data-relationships-with-sql-and-sequelize-2/data-relationships-in-sequelize/define-a-onetomany-relationship-using-sequelize-associations>
-
-**Now we can fill in our information to create our association.** To define a single User to many Courses, call the User model's `hasMany()` method, passing in a reference to the Course model:
+To define a single User to many Courses, call the User model's `hasMany()` method, passing in a reference to the Course model:
 
 ```
 User. associate = function(models) {
