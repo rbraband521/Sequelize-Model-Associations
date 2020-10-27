@@ -95,7 +95,8 @@ To define a single User to many Courses, we call the User model's `hasMany()` me
     User.hasMany(models.Course, {
         //options
         });
-    };```
+    };
+    ```
 
 This tells Sequelize that a User can be associated with one or more(or "many") courses. The Courses table will now contain a UserId foreign Key column. *This will be explained in more detail later when we are customizing the primary key*
 
