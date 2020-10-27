@@ -1,0 +1,1 @@
+# Sequelize-Model-Associations
