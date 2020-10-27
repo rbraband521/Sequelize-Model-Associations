@@ -69,7 +69,7 @@ For this specific project i had written and tested my models before defining the
 ```
 Associations connect two models by a single foreign key, so we need to edit **both** our models to reflect this relationship.
 *****
-There are other types of associations other than what is focused on for this project, if you would like to explore them click here: <https://sequelize.org/master/manual/assocs.html>
+###### There are other types of associations other than what is focused on for this project, if you would like to explore them click here: <https://sequelize.org/master/manual/assocs.html>
 *****
 
 To tell Sequelize that you want an association, first a function must be called. Here is the structure of the function:
