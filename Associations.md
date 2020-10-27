@@ -78,7 +78,7 @@ One-To-Many associations connect one source with multiple targets, while all the
 
 ##### Project specific explanation: We are trying to associate a single User to many Courses and a single Course to a single User. 
 
-The relationship must be a two-way street, and while there are always exceptions, you will almost always see associations in pairs like this. The key words for this association are `hasMany` and `belongsTo`.
+The relationship must be a two-way street, and while there are always exceptions, you will almost always see associations in pairs like this. The key words for this association are `hasMany()` and `belongsTo()`.
 
 To tell Sequelize that you want an association, first a function must be called. Here is the structure of the function:
 
