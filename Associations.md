@@ -91,7 +91,7 @@ User.associate = function(models) {
 ```
 Notice the `associate()` method receives a parameter of models, this contains every declared model within the models directory.
 The `associate()` method is called in the db/index.js file after each model is imported into the Sequelize instance. This allows code within the `associate()` method to access *_ANY_* of the available models. 
-###### reference <https://teamtreehouse.com/library/data-relationships-with-sql-and-sequelize-2/data-relationships-in-sequelize/define-a-onetomany-relationship-using-sequelize-associations>
+###### reference: <https://teamtreehouse.com/library/data-relationships-with-sql-and-sequelize-2/data-relationships-in-sequelize/define-a-onetomany-relationship-using-sequelize-associations>
 
 **Now we can fill in our information to create our association.** To define a single User to many Courses, call the User model's `hasMany()` method, passing in a reference to the Course model:
 
@@ -105,7 +105,7 @@ User. associate = function(models) {
 
 This tells Sequelize that a User can be associated with one or more(or "many") Courses. The Courses table will now contain a `UserId` foreign Key column. *This will be explained in more detail later when we are customizing the foreign key, however take note of the it being capitalized*
 
-For this example, a Course can only have ONE User so we use a One-to-One Association. A single course to a single user. This association includes the Course model's belongsTo() method passing in a reference to the User model:
+For this example, a Course can only have ONE User so we use a One-to-One Association. A single course to a single user. This association includes the Course model's `belongsTo()` method passing in a reference to the User model:
 
 ```
 Course.associate = function(models) {
@@ -125,7 +125,6 @@ At this point if you run `npm start` you will most likey receive an error relate
 **First let's set the foreign key name in both models:**
 
 In order to do this we can finally write some code into the second argument of the `belongsTo()` and `hasMany()` methods. If we pass an options object here we can use the `foreignKey` property to specify the foreign key name like so:
-
 
 models/course.js:
 
@@ -149,12 +148,12 @@ User.associate = function(models) {
 *****
 ### PRIMARY KEY
 
-Sequelize adds an id attribute to your model, which generates an 'id' column in your table that assigns each row a unique ID. The ID acts as a 'primary key', or a unique indexable reference for each entry.
+Sequelize will automatically define a `primaryKey`, it uses `id` by default. However, this will not match with what our associations are defining so we must instruct Sequelize to generate the `primaryKey` column using the property name defind in the model (`foreignKey: 'userId'`). `userId` refers to the `id` column in the `Users` table. (This is important to remember, there is no userId column in the user table.) This is accomplished by setting `primaryKey` to true where the tables are being created.
 
-Specifying 'primaryKey: true' intructs Sequelize to generate the primary key column using the property name defined in the model("foreignKey: 'userId'"). 'userId' refers to the id column in the Users table. (This is important to remember, there is no userId column in the user table)
-In both migration files where the Courses and Users tables are created specify 'primaryKey: true' like so:
+/migrations/....-create-course.js
+
 ```
-await queryInterface.createTable('Courses', {
+wait queryInterface.createTable('Courses', {
   id: {
     allowNull: false,
     autoIncrement: true,
@@ -163,6 +162,7 @@ await queryInterface.createTable('Courses', {
   }
 }
 ```
+/migrations/....-create-user.js
 ```
 await queryInterface.createTable('Users', {
   id: {
@@ -174,7 +174,11 @@ await queryInterface.createTable('Users', {
 }
 ```
 
-One more change is necesasry to fully set up the relationship in the databse. In the projects' /migrations folder, there should be a file with the ending 'create-course.js'. This would have been generated when you created the Course model. In this file we need to change the object labeled userId so that it references the correct information. This was a place where I personally got held up. I didn't even have a userId object in this file so when I was first testing my database I was receiving "column userId does not exist in 'Courses'". Sounds straight forward, but it took me a while to troubleshoot. Here is the full 'create-course.js' file in the /migrations folder:
+One more change is necesasry to fully set up the relationship in the databse. Navigate to the /migrations folder and find the file that ends with `-create-course.js`. This would have been generated when you created the Course model. In this file we need to change the object labeled userId so that it references the correct information. 
+*****
+###### This was a place where I personally got held up. I didn't even have a userId object in this file so when I was first testing my database I was receiving "column UserId does not exist in 'Courses'". Sounds straight forward, but it took me a while to troubleshoot and to understand how all the moving parts of the association work together.
+*****
+Here is the full 'create-course.js' file in the /migrations folder:
 
 ```
 'use strict';
@@ -224,10 +228,10 @@ One more change is necesasry to fully set up the relationship in the databse. In
   }
 };
 ```
-the onDelete: 'CASCADE' configures the model so if a user is deleted, the user's Course will be delted too
-the 'references' section will set up the 'Courses' table in the database to reflect the same relationship we set up in the inital steps of this.
+  * The onDelete: 'CASCADE' configures the model so if a user is deleted, the user's Course will be deleted as well.
+  * The 'references' section will set up the 'Courses' table in the database to reflect the same relationship we set up in the inital steps of this.
 
-At this point, I was still receiving an error "column 'userId' does not exist". For me, this was because of how I was requesting information in my GET request. If you're still receiving this error, navigate to your routes.js file and check out your GET request
+At this point, you could have everything working just great however I was still receiving an error "column 'UserId' does not exist". For me, this was because of how I was requesting information in my GET request. If you're still receiving this error, navigate to your routes.js file and check out your GET request
 
 Mine looks like this: 
 
@@ -252,7 +256,7 @@ router.get('/courses', async (req, res) => {
 );
 ```
 Notice how I've used the include property? This allows us to indicate specific information we want with every Course. In this case, we want to include User information for each Course. "Include the User model as 'user' with these attributes.".
-In the include property I've defined an alias with "as: 'user'". Because of this, when the data is returned "User" is changed to "user". This needs to be reflected in BOTH models. Creating an alias for the model association is as simple as adding an 'as' property to the belongsTo() and hasMany() method options object literal like so:
+In the include property I've defined an alias with "as: 'user'". Because of this, when the data is returned "User" is changed to "user". This needs to be reflected in *BOTH* models. Creating an alias for the model association is as simple as adding an 'as' property to the `belongsTo()` and `hasMany()` method options object literal like so:
 
 models/course.js:
 
@@ -275,6 +279,8 @@ User.associate = function(models) {
   });
 };
 ```
+###### It is safest practice to specify the foreign key if you are going to specify an alias. Simply using `as` to change the name of the association will also change the name of the foreign key.
+
 
 Now, everything should be connected. Our models are calling the associate method which connects one User to many Courses as well as one Course to one User. This association's foreign key is 'userId' and this is all contained in a user object with the alias of 'user'. 
 
