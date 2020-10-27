@@ -66,9 +66,11 @@ module.exports = (sequelize, DataTypes) => {
 ```
 Associations connect two models by a single foreign key, so we need to edit **both** our models to reflect this relationship.
 *****
-There are many different types of associations, if you would like to explore more than what is focused on for this project click here: <https://sequelize.org/master/manual/assocs.html>
+There are other types of associations other than what is focused on for this project, if you would like to explore them click here: <https://sequelize.org/master/manual/assocs.html>
 *****
-For this project, we are using a One-To-Many association. One-To-Many associations are connecting one source with multiple targets, while all these targets are connected only with this single source. We are trying to associate a single User to many Courses as well as a single Course to a single User. The relationship must be a two-way street. The key words for this association are ```hasMany and ```belongsTo.
+##### For this project, we are using a One-To-Many association. 
+
+One-To-Many associations are connecting one source with multiple targets, while all these targets are connected only with this single source. We are trying to associate a single User to many Courses as well as a single Course to a single User. The relationship must be a two-way street. The key words for this association are ```hasMany and ```belongsTo.
 
 To tell Sequelize that you want an association a function must be called:
 
