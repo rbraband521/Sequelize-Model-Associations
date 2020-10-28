@@ -43,7 +43,7 @@ Navigate to the User model, it should look like this after providing the necessa
     return User;
   };
 ```
-For this specific project i had written and tested my models before defining the associations between them so the associations will be defined in the options parameter instead of before the attributes like the generated model suggests. Currently the model looks like this before defining the associations.
+For this specific project I had written and tested my models before defining the associations between them so the associations will be defined in the options parameter instead of before the attributes like the generated model suggests. Currently the model looks like this before defining the associations.
 
 ```
 'use strict';
