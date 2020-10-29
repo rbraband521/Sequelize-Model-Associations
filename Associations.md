@@ -91,8 +91,7 @@ User.associate = function(models) {
 };
 ```
 Notice the `associate()` method receives a parameter of models, this contains every declared model within the models directory.
-The `associate()` method is called in the db/index.js file after each model is imported into the Sequelize instance. This allows code within the `associate()` method to access *_ANY_* of the available models. 
-###### reference: <https://teamtreehouse.com/library/data-relationships-with-sql-and-sequelize-2/data-relationships-in-sequelize/define-a-onetomany-relationship-using-sequelize-associations>
+The `associate()` method is called in the db/index.js file after each model is imported into the Sequelize instance. This allows code within the `associate()` method to access *_ANY_* of the available models. (reference: Treehouse Sequelize Model Association Course).
 
 **Now we can fill in our information to create our association.** 
 
