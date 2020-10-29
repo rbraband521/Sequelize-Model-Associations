@@ -263,7 +263,7 @@ router.get('/courses', async (req, res) => {
   }
 );
 ```
-Notice how I've used the include property? This allows us to indicate specific information we want with every Course. In this case, we want to include User information for each Course. "Include the User model as 'user' with these attributes.".
+Notice how I've used the include property, this allows us to indicate specific information we want with every Course. In this case, we want to include User information for each Course. "Include the User model as 'user' with these attributes.".
 In the include property I've defined an alias with `as: 'user'`. Because of this, when the data is returned `User` is changed to `user`. This needs to be reflected in *BOTH* models. Creating an alias for the model association is as simple as adding an `as` property to the `belongsTo()` and `hasMany()` method options object literal like so:
 
 models/course.js:
