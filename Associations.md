@@ -238,7 +238,7 @@ Here is the full 'create-course.js' file in the /migrations folder:
 *****
 ### Defining an Alias
 
-At this point, you could have everything working just great however I was still receiving an error `column 'UserId' does not exist`. For me, this was because of how I was requesting information in my GET request. If you're still receiving this error, navigate to your routes.js file and check out your GET request
+At this point, you could have everything working just great however I was still receiving an error `column 'UserId' does not exist`. For me, this was because of how I was requesting information in my GET request. If you're still receiving this error, navigate to your routes.js file and check out your GET request.
 
 Mine looks like this: 
 
@@ -262,7 +262,8 @@ router.get('/courses', async (req, res) => {
   }
 );
 ```
-Notice how I've used the include property, this allows us to indicate specific information we want with every Course. In this case, we want to include User information for each Course. "Include the User model as 'user' with these attributes.".
+Notice how I've used the include property, this allows us to indicate specific information we want with every Course. In this case, we want to include User information for each Course. "Include the User model as 'user' with these attributes.". If I commented out the whole 'include' property and deployed my database everything worked, except for the obvious problem I was missing the User information. But at least this helped to narrow down where the issue was.
+
 In the include property I've defined an alias with `as: 'user'`. Because of this, when the data is returned `User` is changed to `user`. This needs to be reflected in *BOTH* models. Creating an alias for the model association is as simple as adding an `as` property to the `belongsTo()` and `hasMany()` method options object literal like so:
 
 models/course.js:
